@@ -1,0 +1,114 @@
+groups:
+#### CPUUtilization ####
+  - name: RDSInstanceCPUUtilizationAlerts
+    rules:
+      - alert: RDSCPUTrouble
+        expr: avg_over_time(aws_rds_cpuutilization_average[10m]) > 80
+        for: 10m
+        labels:
+          severity: trouble
+          category: rds_cpu_usage
+        annotations:
+          summary: "Trouble: High CPU load on {{ $labels.dimension_DBInstanceIdentifier }}"
+          description: "Trouble: CPU load on RDS: {{ $labels.dimension_DBInstanceIdentifier }} has exceeded 80%. High CPU usage may lead to performance issues. Attention required."
+          VALUE: "{{ $value }}"
+          LABELS: "{{ $labels }}"
+
+      - alert: RDSCPUsageCritical
+        expr: avg_over_time(aws_rds_cpuutilization_average[10m]) > 90
+        for: 10m
+        labels:
+          severity: critical
+          category: rds_cpu_usage
+        annotations:
+          summary: "Critical CPU load on {{ $labels.dimension_DBInstanceIdentifier }}"
+          description: "Critical: CPU load on RDS: {{ $labels.dimension_DBInstanceIdentifier }} has exceeded 90%. High CPU usage may lead to performance issues. Immediate action is required."
+          VALUE: "{{ $value }}"
+          LABELS: "{{ $labels }}"
+
+
+#### DBConnections ####
+  - name: RDSInstanceDBConnectionsAlerts
+    rules:
+      - alert: RDSDBConnectionsTrouble
+        expr: avg_over_time(aws_rds_database_connections_average[5m]) > 1000 and avg_over_time(aws_rds_database_connections_average[5m]) <= 1500
+        for: 5m
+        labels:
+          severity: trouble
+          category: db_connects
+        annotations:
+          summary: 'Warning: RDS instance {{ $labels.dimension_DBInstanceIdentifier }} has high database connections'
+          description: 'Database connections are between 1000 and 1500 over the past 5 minutes. The RDS instance {{ $labels.dimension_DBInstanceIdentifier }} is under significant load.'
+          LABELS: '{{ $labels }}'
+          VALUE: '{{ $value }}'
+
+
+      - alert: RDSDBConnectionsCritical
+        expr: avg_over_time(aws_rds_database_connections_average[5m]) > 1500
+        for: 5m
+        labels:
+          severity: critical
+          category: db_connects
+        annotations:
+          summary: 'Critical: RDS instance {{ $labels.dimension_DBInstanceIdentifier }} has very high database connections'
+          description: 'Database connections are above 1500 over the past 5 minutes. The RDS instance {{ $labels.dimension_DBInstanceIdentifier }} might be experiencing extremely high load.'
+          LABELS: '{{ $labels }}'
+          VALUE: '{{ $value }}'
+
+
+#### DBLoad ####
+  - name: RDSInstanceDBLoadAlerts
+    rules:
+      - alert: RDSDBLoadTrouble
+        expr: avg_over_time(aws_rds_dbload_average[10m]) > 80
+        for: 10m
+        labels:
+          severity: trouble
+          category: db_load
+        annotations:
+          summary: "Trouble: High DBLoad on {{ $labels.dimension_DBInstanceIdentifier }}"
+          description: "Trouble: DBLoad on RDS: {{ $labels.dimension_DBInstanceIdentifier }} has exceeded 80%. Attention required."
+          VALUE: "{{ $value }}"
+          LABELS: "{{ $labels }}"
+
+
+      - alert: RDSDBLoadCritical
+        expr: avg_over_time(aws_rds_dbload_average[10m]) > 90
+        for: 10m
+        labels:
+          severity: critical
+          category: db_load
+        annotations:
+          summary: "Critical DBLoad on {{ $labels.dimension_DBInstanceIdentifier }}"
+          description: "Critical: DBLoad on RDS: {{ $labels.dimension_DBInstanceIdentifier }} has exceeded 90%. Immediate attention needed."
+          VALUE: "{{ $value }}"
+          LABELS: "{{ $labels }}"
+
+
+#### DBLoadCPU ####
+  - name: RDSDBLoadCPUAlerts
+    rules:
+      - alert: RDSDBLoadCPUTrouble
+        expr: avg_over_time(aws_rds_dbload_cpu_average[10m]) > 80
+        for: 10m
+        labels:
+          severity: trouble
+          category: db_load_cpu
+        annotations:
+          summary: "Trouble: High DBLoadCPU on {{ $labels.dimension_DBInstanceIdentifier }}"
+          description: "Trouble: DBLoadCPU on RDS: {{ $labels.dimension_DBInstanceIdentifier }} has exceeded 80%. Attention required."
+          VALUE: "{{ $value }}"
+          LABELS: "{{ $labels }}"
+
+
+      - alert: RDSDBLoadCPUCritical
+        expr: avg_over_time(aws_rds_dbload_cpu_average[10m]) > 90
+        for: 10m
+        labels:
+          severity: critical
+          category: db_load_cpu
+        annotations:
+          summary: "Critical: DBLoadCPU on {{ $labels.dimension_DBInstanceIdentifier }}"
+          description: "Critical: DBLoadCPU on RDS: {{ $labels.dimension_DBInstanceIdentifier }} has exceeded 90%. Immediate attention needed."
+          VALUE: "{{ $value }}"
+          LABELS: "{{ $labels }}"

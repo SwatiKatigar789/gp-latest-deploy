@@ -1,0 +1,56 @@
+apiVersion: v1alpha1
+discovery:
+  jobs:
+    - type: AWS/RDS
+      regions:
+        - ap-south-1
+      period: 300
+      length: 86400
+      dimensionNameRequirements: [DBInstanceIdentifier]
+      metrics:
+        - name: CPUUtilization
+          statistics: [Average, Minimum, Maximum]
+        - name: DatabaseConnections
+          statistics: [Sum, Average, Minimum, Maximum]
+        - name: FreeableMemory
+          statistics: [Average, Minimum, Maximum]
+        - name: FreeStorageSpace
+          statistics: [Average, Minimum, Maximum]
+        - name: ReadThroughput
+          statistics: [Average, Maximum, Sum, Minimum]
+        - name: WriteThroughput
+          statistics: [Average, Maximum, Sum, Minimum]
+        - name: ReadIOPS
+          statistics: [Average, Maximum, Sum, Minimum]
+        - name: WriteIOPS
+          statistics: [Average, Maximum, Sum, Minimum]
+        - name: DBLoad
+          statistics: [Average, Maximum]
+        - name: DBLoadCPU
+          statistics: [Average, Maximum]
+        - name: CheckpointLag
+          statistics: [Average, Maximum, Minimum]
+    - type: AWS/VPN
+      regions:
+        - ap-south-1
+      period: 86400
+      length: 604800
+      dimensionNameRequirements: [VpnId]
+      metrics:
+        - name: TunnelDataIn
+          statistics:
+            - Sum
+            - Maximum
+            - Minimum
+            - Average
+        - name: TunnelState
+          statistics:
+            - Maximum
+            - Minimum
+            - Average
+        - name: TunnelDataOut
+          statistics:
+            - Sum
+            - Maximum
+            - Minimum
+            - Average
