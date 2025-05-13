@@ -15,6 +15,9 @@ services:
     ports:
       - 1783:9090
     command:
+      - '--storage.tsdb.retention.time=2h'
+      - '--storage.tsdb.min-block-duration=2h'
+      - '--storage.tsdb.max-block-duration=2h'
       - '--config.file=/etc/prometheus/prometheus.yml'
     volumes:
       - ./prometheus/:/etc/prometheus/
