@@ -10,3 +10,25 @@ groups:
       summary: "Endpoint {{ $labels.instance }} is down"
       description: "The endpoint {{ $labels.instance }} is not reachable."
       value: "{{ $value }}"
+
+
+
+======================================================================================
+
+
+
+
+groups:
+- name: BlackboxRules
+  rules:
+  - alert: HTTPProbeFailed
+    expr: probe_success == 0
+    for: 1m
+    labels:
+      severity: "critical"
+      category: url
+    annotations:
+      summary: "Critical: The endpoint {{ $labels.instance }} is down."
+      description: "The endpoint {{ $labels.url }} has been unreachable for 1 minute. Please check the service to restore connectivity."
+      VALUE: "{{ $value }}"
+      LABELS: "{{ $labels }}"
